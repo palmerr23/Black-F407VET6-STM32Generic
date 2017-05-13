@@ -1,6 +1,6 @@
 /**
   @page ADC_DualModeInterleaved  Use ADC1 and ADC2 in Dual interleaved mode and DMA mode3
-
+  * Modified 6-May-2017 RP for Arduino
   @verbatim
   ******************** (C) COPYRIGHT 2017 STMicroelectronics *******************
   * @file    ADC/ADC_DualModeInterleaved/readme.txt 
@@ -35,18 +35,26 @@
   ******************************************************************************
   @endverbatim
 
+@par Hardware and Software environment 
+
+  - This example runs on STM32F407xx devices under Arduino and has been optimised for the STM32GENERIC codeset: https://github.com/danieleff/STM32GENERIC
+
 @par Example Description 
 
 
-This example provides a short description of how to use two ADC peripherals to
-perform conversions in interleaved dual-mode.
+This example provides a short description of how to use 
+- Two ADC peripherals to perform conversions in interleaved dual-mode.
+- One regular channel, 8-bit resolution
+- using DMA in mode 3 with 5Msps.
 
-This example provides a short description of how to use the ADC peripheral to
-convert a regular channel in Dual interleaved mode using DMA in mode 3 with 5Msps.
 
-DMA mode 3 is used in interleaved mode in 6-bit and 8-bit resolutions.
+The user needs to supply some way to vary the ADC1 channel1 input value. Three options are
+- a potentiometer between 3.3v and GND, 
+- a signal generator with DC coupled output of 0 < input < 3.3v
+- using a DAC to generate a signal
 
-The Dual interleaved delay is configured 6 ADC clk cycles.
+
+The Dual interleaved delay is configured 6 ADC clk cycles using mode.TwoSamplingDelay
 
 On each DMA request (two data items are available) two bytes representing two 
 ADC-converted data items are transferred as a half word.
@@ -56,12 +64,12 @@ A DMA request is generated each time 2 data items are available
 1st request: ADC_CDR[15:0] = (ADC2_DR[7:0] << 8) | ADC1_DR[7:0] 
 2nd request: ADC_CDR[15:0] = (ADC2_DR[7:0] << 8) | ADC1_DR[7:0]
 
-The ADC1 and ADC2 are configured to convert ADC Channel 12, with conversion 
+The ADC1 and ADC2 are configured to convert ADC Channel 1, with conversion 
 triggered by software.
-By this way, ADC channel 12 is converted each 6 cycles.
+By this way, ADC channel 1 is converted each 6 cycles.
 
-In this example, the system clock is 144MHz, APB2 =72MHz and ADC clock = APB2 /2.
-Since ADCCLK= 36MHz and Conversion rate = 6 cycle
+If the system clock is 144MHz, APB2 = 72MHz and ADC clock = APB2 /2.
+Since ADCCLK = 36MHz and Conversion rate = 6 cycles
 ==> Conversion Time = 36M/6cyc = 6Msps.
 
 STM32 Eval board's LEDs can be used to monitor the transfer status:
@@ -71,8 +79,8 @@ STM32 Eval board's LEDs can be used to monitor the transfer status:
  @note Refer to "simulation.xls" file to have the diagram simulation of the example.
 
 
-@note Care must be taken when using HAL_Delay(), this function provides accurate delay (in milliseconds)
-      based on variable incremented in SysTick ISR. This implies that if HAL_Delay() is called from
+@note Care must be taken when using Delay(), this function provides accurate delay (in milliseconds)
+      based on variable incremented in SysTick ISR. This implies that if Delay() is called from
       a peripheral ISR process, then the SysTick interrupt must have higher priority (numerically lower)
       than the peripheral interrupt. Otherwise the caller ISR process will be blocked.
       To change the SysTick interrupt priority you have to use HAL_NVIC_SetPriority() function.
@@ -81,35 +89,6 @@ STM32 Eval board's LEDs can be used to monitor the transfer status:
       to have correct HAL operation.
 
 
-@par Directory contents 
-
-  - ADC/ADC_DualModeInterleaved/Inc/stm32f4xx_hal_conf.h    HAL configuration file
-  - ADC/ADC_DualModeInterleaved/Inc/stm32f4xx_it.h          Interrupt handlers header file
-  - ADC/ADC_DualModeInterleaved/Inc/main.h                  Main program header file  
-  - ADC/ADC_DualModeInterleaved/Src/stm32f4xx_it.c          Interrupt handlers
-  - ADC/ADC_DualModeInterleaved/Src/main.c                  Main program
-  - ADC/ADC_DualModeInterleaved/Src/stm32f4xx_hal_msp.c     HAL MSP module
-  - ADC/ADC_DualModeInterleaved/Src/system_stm32f4xx.c      STM32F4xx system clock configuration file
-
-
-@par Hardware and Software environment 
-
-  - This example runs on STM32F429xx/STM32F439xx devices.
-    
-  - This example has been tested with STM324x9I-EVAL RevB evaluation board and can be
-    easily tailored to any other supported device and development board. 
-
-  - STM324x9I-EVAL RevB Set-up
-    - Connect PC.2 to a power supply (do not forget to connect the power supply 
-      GND to the EVAL board GND)
-
-
-@par How to use it ? 
-
-In order to make the program work, you must do the following :
- - Open your preferred toolchain 
- - Rebuild all files and load your image into target memory
- - Run the example
 
  * <h3><center>&copy; COPYRIGHT STMicroelectronics</center></h3>
  */

@@ -1,5 +1,5 @@
 /**
- * STM32GENERIC works
+ * STM32GENERIC 
  * 12 bits DMA, single ADC
  * DMA is stopped after one buffer, to allow the buffer to be processed, unchanged.
  * DMA can be left running - see instructions in loop()and HAL_ADC_ConvCpltCallback(). 
